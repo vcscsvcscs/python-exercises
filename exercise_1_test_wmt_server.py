@@ -1,5 +1,4 @@
 import unittest
-from urllib import response
 from exercise_1_wmt_server import wmt_server
 from webtest import TestApp
 

@@ -1,4 +1,3 @@
-from json import JSONEncoder
 from bottle import route, run, Bottle, request, response
 from exercise_1_weathermonitoringtool import query_weather_data
 
