@@ -1,3 +1,4 @@
+from math import floor
 import requests
 #Queries the current weather info from external service (https://openweathermap.org/current), returns dictioanry with weather info about the choosen city
 def query_weather_data(city,api_key):
@@ -10,3 +11,6 @@ def query_weather_data(city,api_key):
     response = requests.get(weatherUrl)
     return response.json()
 
+#takes a temperature in kelvin and returns it in celsius,fahrenheit tuple
+def temperature_to_celsius_and_fahrenheit(temp):
+    return (round(temp-273.15,2),round((temp - 273.15)* (9/5) + 32,2))

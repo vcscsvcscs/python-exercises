@@ -1,5 +1,5 @@
 import unittest
-from exercise_1_weathermonitoringtool import query_weather_data
+from exercise_1_weathermonitoringtool import query_weather_data, temperature_to_celsius_and_fahrenheit
 
 class TestWeatherMonitoringTool(unittest.TestCase):
     def test_query_weather_data(self):
@@ -12,6 +12,12 @@ class TestWeatherMonitoringTool(unittest.TestCase):
         self.assertEqual(weather_data['timezone'], 7200)
         self.assertEqual(weather_data['id'], 3054643)
         self.assertEqual(weather_data['cod'], 200)
+
+    def test_temperature_to_celsius_and_fahrenheit(self):
+        temp = 300
+        celsius, fahrenheit = temperature_to_celsius_and_fahrenheit(temp)
+        self.assertEqual(celsius, 26.85)
+        self.assertEqual(fahrenheit, 80.33)
 
 if __name__ == '__main__':
     unittest.main()
