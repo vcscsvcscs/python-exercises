@@ -1,69 +1,81 @@
 import datetime
 import time
 import requests
-#Queries the current weather info from external service (https://openweathermap.org/current), returns dictioanry with weather info about the choosen city
-def query_weather_data(city,api_key):
-    #fetch coordinates of the city
-    locationUrl = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%d&appid=%s" % (city, 1, api_key)
+
+
+# Queries the current weather info from external service (https://openweathermap.org/current),
+# returns dictioanry with weather info about the choosen city
+def query_weather_data(city, api_key):
+    # fetch coordinates of the city
+    locationUrl = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%d&appid=%s" % (
+        city, 1, api_key)
     response = requests.get(locationUrl)
     locationData = response.json()
-    #fetch weather data
-    weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s" % (locationData[0]["lat"], locationData[0]["lon"], api_key)
+    # fetch weather data
+    weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s" % (
+        locationData[0]["lat"], locationData[0]["lon"], api_key)
     response = requests.get(weatherUrl)
     return response.json()
 
-#takes a temperature in kelvin and returns it in celsius,fahrenheit tuple
-def temperature_to_celsius_and_fahrenheit(temp):
-    return (round(temp-273.15,2),round((temp - 273.15)* (9/5) + 32,2))
+# takes a temperature in kelvin and returns it in celsius,fahrenheit tuple
 
-def time_until_sunrise_or_sundown(sunrise,sunset):
+
+def temperature_to_celsius_and_fahrenheit(temp):
+    return (round(temp-273.15, 2), round((temp - 273.15) * (9/5) + 32, 2))
+
+
+def time_until_sunrise_or_sundown(sunrise, sunset):
     untilSunrise = sunrise - datetime.datetime.now().timestamp()
     untilSunset = sunset - datetime.datetime.now().timestamp()
-    if(0 < untilSunset and untilSunrise < 0):
-        return ("until_sunset",time.strftime("%H:%M:%S", time.gmtime(untilSunset)))
+    if (0 < untilSunset and untilSunrise < 0):
+        return ("until_sunset", time.strftime("%H:%M:%S", time.gmtime(untilSunset)))
     else:
-        if(0 < untilSunrise):
-            return ("until_sunrise",time.strftime("%H:%M:%S", time.gmtime(untilSunrise)))
+        if (0 < untilSunrise):
+            return ("until_sunrise", time.strftime("%H:%M:%S", time.gmtime(untilSunrise)))
         else:
-            return ("until_sunrise",time.strftime("%H:%M:%S", time.gmtime((untilSunrise)+ datetime.timedelta(days=1).total_seconds())))
+            return ("until_sunrise", time.strftime("%H:%M:%S", time.gmtime(
+                (untilSunrise) + datetime.timedelta(days=1).total_seconds())))
+
 
 def predict_mood_from_weather(weather_data):
-    celsius, fahrenheit = temperature_to_celsius_and_fahrenheit(weather_data['main']['feels_like'])
-    moods = ["happy","happy", "neutral","calm","depressed" ,"depressed", "aggressive","aggressive","aggressive","aggressive","aggressive"]
+    celsius, fahrenheit = temperature_to_celsius_and_fahrenheit(
+        weather_data['main']['feels_like'])
+    moods = ["happy", "happy", "neutral", "calm", "depressed", "depressed",
+             "aggressive", "aggressive", "aggressive", "aggressive", "aggressive"]
     current_mood = 0
-    if(weather_data['clouds']['all'] > 50):
+    if (weather_data['clouds']['all'] > 50):
         current_mood += 2
-    elif(weather_data['clouds']['all'] > 20):
+    elif (weather_data['clouds']['all'] > 20):
         current_mood += 1
-    if(weather_data['weather'][0]['main'] == "Clouds"):
+    if (weather_data['weather'][0]['main'] == "Clouds"):
         current_mood += 0
-    if(weather_data['weather'][0]['main'] == "Rain"):
-        if(weather_data['rain']['1h'] > 10):
+    if (weather_data['weather'][0]['main'] == "Rain"):
+        if (weather_data['rain']['1h'] > 10):
             current_mood += 3
-        elif(weather_data['rain']['1h'] > 3):
+        elif (weather_data['rain']['1h'] > 3):
             current_mood += 2
         else:
             current_mood += 1
-    if(weather_data['weather'][0]['main'] == "Clear"):
+    if (weather_data['weather'][0]['main'] == "Clear"):
         current_mood += 0
-    if(weather_data['weather'][0]['main'] == "Snow"):
-        if(weather_data['snow']['1h'] > 3):
+    if (weather_data['weather'][0]['main'] == "Snow"):
+        if (weather_data['snow']['1h'] > 3):
             current_mood += 3
         else:
             current_mood += 2
-    if(celsius < 10):
+    if (celsius < 10):
         current_mood += 2
-    elif(celsius < 18):
+    elif (celsius < 18):
         current_mood += 1
-    elif(celsius < 24):
+    elif (celsius < 24):
         current_mood += 0
-    elif(celsius < 30):
+    elif (celsius < 30):
         current_mood += 1
-    elif(celsius < 37):
+    elif (celsius < 37):
         current_mood += 2
     else:
         current_mood += 4
 
     return moods[current_mood]
 
-#def compare_and_plot_weather_data(city1,city2,city3,city4,api_key):
+# def compare_and_plot_weather_data(city1,city2,city3,city4,api_key):
