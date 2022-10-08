@@ -38,7 +38,7 @@ def temperature_to_celsius_and_fahrenheit(temp):
     return (round(temp-273.15, 2), round((temp - 273.15) * (9/5) + 32, 2))
 
 
-def time_until_sunrise_or_sundown(sunrise, sunset):
+def time_until_sunrise_or_sunset(sunrise, sunset):
     untilSunrise = sunrise - datetime.datetime.now().timestamp()
     untilSunset = sunset - datetime.datetime.now().timestamp()
     if (0 < untilSunset and untilSunrise < 0):

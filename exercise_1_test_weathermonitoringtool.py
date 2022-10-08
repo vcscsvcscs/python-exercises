@@ -1,7 +1,7 @@
 import datetime
 import unittest
 from exercise_1_weathermonitoringtool import query_city_location, query_weather_data, temperature_to_celsius_and_fahrenheit
-from exercise_1_weathermonitoringtool import time_until_sunrise_or_sundown, predict_mood_from_weather
+from exercise_1_weathermonitoringtool import time_until_sunrise_or_sunset, predict_mood_from_weather
 
 
 class TestWeatherMonitoringTool(unittest.TestCase):
@@ -28,9 +28,9 @@ class TestWeatherMonitoringTool(unittest.TestCase):
         self.assertEqual(celsius, 26.85)
         self.assertEqual(fahrenheit, 80.33)
 
-    def test_time_until_sunrise_or_sundown(self):
+    def test_time_until_sunrise_or_sunset(self):
         weather_data = query_weather_data(self.city, self.api_key)
-        untilwhat, time = time_until_sunrise_or_sundown(
+        untilwhat, time = time_until_sunrise_or_sunset(
             weather_data['sys']['sunrise'], weather_data['sys']['sunset'])
         if (datetime.datetime.now().timestamp() < weather_data['sys']['sunrise'] or
                 datetime.datetime.now().timestamp() > weather_data['sys']['sunset']):
