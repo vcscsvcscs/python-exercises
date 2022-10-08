@@ -1,25 +1,39 @@
 import datetime
 import time
 import requests
+import matplotlib.pyplot as plt
+
+
+# Queries a cities location from external service (https://openweathermap.org/current),
+# returns tuple with location info about the choosen city
+def query_city_location(city, api_key):
+    if not hasattr(query_city_location, "counter"):
+        # it doesn't exist yet, so initialize it
+        query_city_location.citylocationcache = {}
+    if (query_city_location.citylocationcache.get(city) != None):
+        return query_city_location.citylocationcache.get(city)
+    locationUrl = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%d&appid=%s" % (
+        city, 1, api_key)
+    response = requests.get(locationUrl)
+    locationData = response.json()
+    query_city_location.citylocationcache[city] = (
+        locationData[0]['lat'], locationData[0]['lon'])
+    return (locationData[0]["lat"], locationData[0]["lon"])
 
 
 # Queries the current weather info from external service (https://openweathermap.org/current),
 # returns dictioanry with weather info about the choosen city
 def query_weather_data(city, api_key):
     # fetch coordinates of the city
-    locationUrl = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=%d&appid=%s" % (
-        city, 1, api_key)
-    response = requests.get(locationUrl)
-    locationData = response.json()
+    lat, lon = query_city_location(city, api_key)
     # fetch weather data
     weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s" % (
-        locationData[0]["lat"], locationData[0]["lon"], api_key)
+        lat, lon, api_key)
     response = requests.get(weatherUrl)
     return response.json()
 
+
 # takes a temperature in kelvin and returns it in celsius,fahrenheit tuple
-
-
 def temperature_to_celsius_and_fahrenheit(temp):
     return (round(temp-273.15, 2), round((temp - 273.15) * (9/5) + 32, 2))
 
@@ -78,4 +92,10 @@ def predict_mood_from_weather(weather_data):
 
     return moods[current_mood]
 
-# def compare_and_plot_weather_data(city1,city2,city3,city4,api_key):
+
+def compare_and_plot_weather_data(city1, city2, city3, city4, api_key):
+    city1data = query_weather_data(city1, api_key)
+    city2data = query_weather_data(city2, api_key)
+    city3data = query_weather_data(city3, api_key)
+    city4data = query_weather_data(city4, api_key)
+    plt.savefig("comparison.png")
