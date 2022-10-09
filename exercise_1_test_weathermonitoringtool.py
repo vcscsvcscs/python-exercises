@@ -1,6 +1,7 @@
 import datetime
 import unittest
-from exercise_1_weathermonitoringtool import query_city_location, query_weather_data, temperature_to_celsius_and_fahrenheit
+import os.path
+from exercise_1_weathermonitoringtool import compare_and_plot_weather_data, query_city_location, query_weather_data, temperature_to_celsius_and_fahrenheit
 from exercise_1_weathermonitoringtool import time_until_sunrise_or_sunset, predict_mood_from_weather
 
 
@@ -51,6 +52,12 @@ class TestWeatherMonitoringTool(unittest.TestCase):
             '1h': 16}, 'clouds': {'all': 50}, 'main': {'feels_like': 320}}
         mood = predict_mood_from_weather(weather_data)
         self.assertEqual(mood, "aggressive")
+
+    def test_compare_and_plot_weather_data(self):
+        compare_and_plot_weather_data(
+            'Warsaw', self.city, 'Prague', 'Wien', self.api_key)
+        self.assertTrue(os.path.exists(
+            ('comparisonpics/'+'Warsaw'+self.city+'Prague'+'Wien'+'.png')))
 
 
 if __name__ == '__main__':
