@@ -38,3 +38,4 @@ jobs:
       run: |
         python exercise_1_test_wmt_server.py
         python exercise_1_test_weathermonitoringtool.py
+        python exercise_2_test_metar_validation.py
