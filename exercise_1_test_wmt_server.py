@@ -1,6 +1,5 @@
 import datetime
 import unittest
-from urllib import response
 from exercise_1_wmt_server import wmt_server
 from exercise_1_weathermonitoringtool import query_weather_data
 from webtest import TestApp
@@ -38,14 +37,14 @@ class TestWMTServer(unittest.TestCase):
         response = self.test_app.get(
             '/%s/temperature?api_key=%s' % (self.city, self.api_key))
         data = response.json
-        self.assertTrue(data.get("celsius") != None)
-        self.assertTrue(data.get("fahrenheit") != None)
+        self.assertNotEqual(data.get("celsius"), None)
+        self.assertNotEqual(data.get("fahrenheit"), None)
 
     def test_city_mood(self):
         response = self.test_app.get(
             '/%s/mood?api_key=%s' % (self.city, self.api_key))
         data = response.json
-        self.assertTrue(data.get("mood") != None)
+        self.assertNotEqual(data.get("mood"), None)
 
     def test_time_until_sunrise_or_sunset(self):
         weather_data = query_weather_data(self.city, self.api_key)
@@ -54,9 +53,14 @@ class TestWMTServer(unittest.TestCase):
         data = response.json
         if (datetime.datetime.now().timestamp() < weather_data['sys']['sunrise'] or
                 datetime.datetime.now().timestamp() > weather_data['sys']['sunset']):
-            self.assertTrue(data.get("until_sunrise") != None)
+            self.assertNotEqual(data.get("until_sunrise"), None)
         else:
-            self.assertTrue(data.get("until_sunset") != None)
+            self.assertNotEqual(data.get("until_sunset"), None)
+
+    def test_city_comparison(self):
+        response = self.test_app.get('/comparecities?city1=%s&city2=%s&city3=%s&city4=%s&api_key=%s' %
+                                     ('Warsaw', self.city, 'Prague', 'Wien', self.api_key))
+        self.assertEqual(response.content_type, "image/png")
 
 
 if __name__ == '__main__':
