@@ -12,7 +12,7 @@ To host the weathermonitoringtool on your localhost port 8080 run the following 
 
 ### City Information /%city%?api_key=%key%
 
-    Returns a json that contains information(name,celsius,fahrenheit,mood,weather_data,time until sunrise or sunset) on the specified city.
+Returns a json that contains information(name,celsius,fahrenheit,mood,weather_data,time until sunrise or sunset) on the specified city.
 
 Example:
 
@@ -24,7 +24,7 @@ json-response:
 
 ### City Weather-Data /%city%/weatherdata?api_key=%key%>
 
-    Returns a json that contains information(weather_data) on the specified city.
+Returns a json that contains information(weather_data) on the specified city.
 
 Example:
 
@@ -36,7 +36,7 @@ json-response:
 
 ### City Temperature /%city%/temperature?api_key=%key%>
 
-    Returns a json that contains current temperature in celsius and fahrenheit on the specified city.
+Returns a json that contains current temperature in celsius and fahrenheit on the specified city.
 
 Example:
 
@@ -48,7 +48,7 @@ json-response:
 
 ### City Mood prediction /%city%/mood?api_key=%key%>
 
-    Returns a json that contains a mood prediction based on current information.
+Returns a json that contains a mood prediction based on current information.
 
 Example:
 
@@ -60,7 +60,7 @@ json-response:
 
 ### City Time until next sunrise or sunset /%city%/time_until_sunrise_or_sunset?api_key=%key%>
 
-    Returns a json that contains the time(h/m/s) until the next sunset or sunrise.
+Returns a json that contains the time(h/m/s) until the next sunset or sunrise.
 
 Example:
 
@@ -72,7 +72,7 @@ json-response:
 
 ### Compare 4 cities temperature /comparecities?city1=%city1%&city2=%city2%&city3=%city3%&city4=%city4%&api_key=%key%>
 
-    Creates a comparison of 4 cities's current temperature(in celsius) on the server as a png file, then serves it.
+Creates a comparison of 4 cities's current temperature(in celsius) on the server as a png file, then serves it.
 
 Example:
 
